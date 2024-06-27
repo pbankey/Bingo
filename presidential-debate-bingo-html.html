@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presidential Debate Bingo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .bingo-card {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .bingo-space {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.8rem;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .bingo-space.selected::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,5 61,40 98,40 68,62 79,97 50,75 21,97 32,62 2,40 39,40" fill="gray" /></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            opacity: 0.3;
+        }
+        .bg-red {
+            background-color: #ffcccb;
+        }
+        .bg-blue {
+            background-color: #ADD8E6;
+        }
+        button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .signature {
+            font-style: italic;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Presidential Debate Bingo</h1>
+    <div id="bingo-card" class="bingo-card"></div>
+    <button id="new-card">New Card</button>
+    <div id="bingo-message" class="signature"></div>
+    <div class="signature">With love, from Philip</div>
+
+    <script>
+        const bingoItems = [
+            "Fake News!", "C'mon, man!", "I did more in 4 years...", "Let me be clear...", "China virus",
+            "Hunter Biden", "Sleepy Joe", "Gas prices", "Obama", "Best economy ever",
+            "Folks...", "Radical left", "Not true!", "I built the wall", "Climate change is real",
+            "You're the worst president", "Emails", "No one can _____ like me", "Biggest crowd", "Socialism",
+            "Witch hunt", "Insurrection", "Drain the swamp", "Antifa", "Hunter Biden reference"
+        ];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function createBingoCard() {
+            const card = document.getElementById('bingo-card');
+            card.innerHTML = '';
+            const shuffled = shuffleArray([...bingoItems]).slice(0, 25);
+            shuffled.forEach((item, index) => {
+                const space = document.createElement('div');
+                space.className = 'bingo-space';
+                space.textContent = item;
+                space.onclick = () => toggleSpace(space);
+                if ([0, 1, 5, 6].includes(index)) {
+                    space.classList.add('bg-blue');
+                } else if ([0, 1, 2, 3, 4, 10, 11, 12, 13, 14, 20, 21, 22, 23, 24].includes(index)) {
+                    space.classList.add('bg-red');
+                }
+                card.appendChild(space);
+            });
+        }
+
+        function toggleSpace(space) {
+            space.classList.toggle('selected');
+            checkBingo();
+        }
+
+        function checkBingo() {
+            const spaces = document.querySelectorAll('.bingo-space');
+            const lines = [
+                [0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17, 18, 19], [20, 21, 22, 23, 24],
+                [0, 5, 10, 15, 20], [1, 6, 11, 16, 21], [2, 7, 12, 17, 22], [3, 8, 13, 18, 23], [4, 9, 14, 19, 24],
+                [0, 6, 12, 18, 24], [4, 8, 12, 16, 20]
+            ];
+            const bingo = lines.some(line => line.every(index => spaces[index].classList.contains('selected')));
+            document.getElementById('bingo-message').textContent = bingo ? 'BINGO!' : '';
+        }
+
+        document.getElementById('new-card').onclick = createBingoCard;
+        createBingoCard();
+    </script>
+</body>
+</html>
