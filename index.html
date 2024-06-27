@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Presidential Debate Bingo</title>
     <style>
         body {
@@ -13,21 +13,24 @@
             justify-content: center;
             min-height: 100vh;
             margin: 0;
+            padding: 10px;
             background-color: #f0f0f0;
+            box-sizing: border-box;
         }
         h1 {
             font-size: 2rem;
             margin-bottom: 1rem;
+            text-align: center;
         }
         .bingo-card {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 0.5rem;
             margin-bottom: 1rem;
+            max-width: 100%;
         }
         .bingo-space {
-            width: 100px;
-            height: 100px;
+            aspect-ratio: 1 / 1;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -39,6 +42,7 @@
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            padding: 5px;
         }
         .bingo-space.selected::after {
             content: '';
@@ -64,11 +68,18 @@
             padding: 0.5rem 1rem;
             font-size: 1rem;
             cursor: pointer;
+            margin-bottom: 1rem;
         }
         .signature {
             font-style: italic;
             font-size: 0.8rem;
             margin-top: 1rem;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .bingo-space {
+                font-size: 0.6rem;
+            }
         }
     </style>
 </head>
@@ -82,10 +93,10 @@
     <script>
         const bingoItems = [
             "Fake News!", "C'mon, man!", "I did more in 4 years...", "Let me be clear...", "China virus",
-            "Hunter Biden", "Sleepy Joe", "Gas prices", "Obama", "Best economy ever",
+            "Fake media", "Sleepy Joe", "Gas prices", "Obama", "Best economy ever",
             "Folks...", "Radical left", "Not true!", "I built the wall", "Climate change is real",
             "You're the worst president", "Emails", "No one can _____ like me", "Biggest crowd", "Socialism",
-            "Witch hunt", "Insurrection", "Drain the swamp", "Antifa", "Hunter Biden reference"
+            "Witch hunt", "Insurrection", "Drain the swamp", "Antifa", "Middle class families"
         ];
 
         function shuffleArray(array) {
